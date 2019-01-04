@@ -2,16 +2,14 @@ package com.scala.practice
 
 import java.lang
 
-import com.frugalmechanic.optparse.OptParse
-
 import scala.reflect.runtime.universe._
 
 /**
  * Created by Srikanth.nelluri on 05/11/2018
  */
-object PracticeScala extends OptParse {
+object PracticeScala {
 
-  def main(args: Array[String]) = {
+  def main(args: Array[String]): Unit = {
 
 
     val g: List[DictionaryInfo] = List()
@@ -31,7 +29,7 @@ object PracticeScala extends OptParse {
 
     println(Option(n).map(_.patternId).getOrElse(1))
 
-    println((17 << 3))
+    println(17 << 3)
 
     //println(11.0/2)
 

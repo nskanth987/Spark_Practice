@@ -1,5 +1,7 @@
 package com.scala.practice
 
+import java.lang.reflect.Constructor
+
 /**
  * Created By: GGK
  * Date: 04-02-2019
@@ -12,8 +14,15 @@ object PracticeReflec {
     import scala.tools.reflect.ToolBox
     val toolbox = currentMirror.mkToolBox()
 
-    val k = q"5.equals(5)"
-    val res = toolbox.eval(k)
-    println(res)
+    val k =
+      """case class Emp(id: Int){}
+         scala.reflect.classTag[Emp].runtimeClass
+       """
+    // val res = toolbox.eval(k)
+    val res = toolbox.compile(toolbox.parse(k))().asInstanceOf[Class[_]]
+    val obj = res.getDeclaredConstructors()(0).newInstance(new Integer(123))
+    println(obj)
   }
 }
+
+case class Emp(id: Int)

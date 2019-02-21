@@ -25,9 +25,9 @@ object SparkSQLDBConnTest {
   }
 
   def setup() = {
-    val jdbcHostname = "GGKU2SER10"
+    val jdbcHostname = ""
     val jdbcPort = 1433
-    val jdbcDatabase = "GGKAI_POC"
+    val jdbcDatabase = ""
 
     jdbcUrl = s"jdbc:sqlserver://${jdbcHostname}:${jdbcPort};database=${jdbcDatabase};integratedSecurity=true"
 

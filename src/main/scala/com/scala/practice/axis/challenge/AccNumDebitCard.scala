@@ -1,33 +1,40 @@
 package com.scala.practice.axis.challenge
 
+import scala.collection.mutable
+
 object AccNumDebitCard {
 
   def main(args: Array[String]): Unit = {
 
-    val inpPairs = scala.io.Source.stdin.getLines.map { x =>
-      val line = x.split(" ")
-      val left = line(0).toInt
-      val right = line(1).toInt
+    val inpTuples = scala.io.Source.stdin.getLines.map { x =>
+      val inp = x.split(" ")
+      val left = inp(0).toInt
+      val right = inp(1).toInt
       (left, right)
-    }.toList.dropRight(1)
-    //val inpPairs = List((1000, 2000), (1500, 2000), (1400, 1600), (2000, 18000))
+    } //val inpTuples = List((1000, 2000), (1500, 2000), (1400, 1600), (2000, 18000))
 
-    val total = inpPairs
-      .flatMap(x => List(x._1, x._2)).groupBy(identity).mapValues(_.size)
-
-    val (debit, account) = total.partition(_._2 == 1)
-
-    val output = inpPairs.map { x =>
-      val res = if (!(account.contains(x._1) || account.contains(x._2)))
-        "-1 -1"
-      else if (debit.contains(x._1))
-        "1 0"
+    val allNums = inpTuples
+      .flatMap(x => List(x._1, x._2)).foldLeft(mutable.Map[Int, Int]())((map, value) => {
+      val exists = map.get(value)
+      if (exists.isDefined)
+        map.updated(value, exists.get + 1)
       else
-        "0 1"
+        map.updated(value, 1)
+    })
 
-      res
+    val accountNos = allNums.filterNot(_._2 == 1)
+
+    inpTuples.foreach { x =>
+      val res = if (!(accountNos.contains(x._1) || accountNos.contains(x._2)))
+        "-1 -1"
+      else if (accountNos.contains(x._1))
+        "0 1"
+      else
+        "1 0"
+
+      if (x._1 != -1)
+        println(res)
     }
-    output.foreach(println)
   }
 }
 

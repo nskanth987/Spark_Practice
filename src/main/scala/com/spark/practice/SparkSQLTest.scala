@@ -1,34 +1,37 @@
 package com.spark.practice
 
-import java.io.{File, FileInputStream}
+import java.io._
 import java.sql.Date
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.spark.sql.SparkSession
-
 
 object SparkSQLTest {
 
   def main(args: Array[String]): Unit = {
 
-    val spark = SparkSession
+    implicit val spark: SparkSession = SparkSession
       .builder()
       .appName("Spark SQL basic example")
-      .config("spark.master", "local[*]")
+      .master("local[*]")
       .getOrCreate()
+
+    import spark.implicits._
+    import org.apache.spark.sql.functions._
 
     spark.conf.set("spark.sql.crossJoin.enabled", "true")
 
-    import spark.implicits._
+    val depts = Seq(Dept(1, DepName("AR")), Dept(3, DepName("AR")), Dept(3, DepName("CR")), Dept(4, DepName("CR")),
+      Dept(4, DepName("FR")), Dept(9, DepName("FR")), Dept(10, DepName("FR"))).toDS.repartitionByRange(2, $"empId")
 
-    val f = new File("E:\\DQChecks.xls")
-    val fis = new FileInputStream(f)
-    val myWorkbook = new HSSFWorkbook(fis)
-    val mySheet = myWorkbook.getSheetAt(0)
+    depts.rdd.mapPartitionsWithIndex((idx, vs) => {
+      vs.map(x => x.copy(x.empId, x.depName.copy(idx.toString)))
+    }).sortBy(_.depName.depName).take(20).foreach(println)
+
+    val emp = Seq(Employee(1, "", "", Date.valueOf("2019-07-22"))).toDS
 
   }
 
-  def toLCC(x: String) = {
+  def toLCC(x: String): String = {
     val parts = x.split("_")
     parts.head + parts.tail.map(e => {
       e.head.toUpper + e.tail
@@ -45,7 +48,10 @@ object SparkSQLTest {
 
 }
 
+case class Employee(empId: Double, firstName: String, lastName: String, birthDay: Date)
 
-case class Employee(empId: Double, firstName: String, lastName: String, birthDay: Date, salary: Double)
+case class Dept(empId: Int, depName: DepName)
 
-case class Dept(empId: Double, depName: String)
+case class DepName(depName: String)
+
+

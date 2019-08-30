@@ -66,18 +66,6 @@ class LoaderUtils {
     }
   }
 
-  /**
-   * Writes the input Dataset as delimited text
-   *
-   * @param inputDataset Input Dataset.
-   * @param outputPath   Output Path.
-   * @param delimiter    sets the single character as a separator for each field and value.
-   * @param codec        compression codec to use when saving to file.
-   *                     Options include none, bzip2, gzip, lz4, snappy and deflate.
-   * @param saveMode     Specifies the behavior when data or table already exists.
-   *                     Options include Overwrite, Append, Ignore, ErrorIfExists.
-   * @tparam T Type of the input Dataset
-   */
   def writeDelimitedText[T <: Product : ClassTag : TypeTag]
   (inputDataset: Dataset[T], outputPath: String, delimiter: String = "\t",
    codec: String = "none", saveMode: SaveMode = SaveMode.ErrorIfExists,
@@ -90,17 +78,6 @@ class LoaderUtils {
       .csv(outputPath)
   }
 
-  /**
-   * Writes the input Dataset as parquet files
-   *
-   * @param outputDataset Input Dataset.
-   * @param outputPath    Output Path.
-   * @param codec         compression codec to use when saving to file.
-   *                      Options include none, bzip2, gzip, lz4, snappy and deflate.
-   * @param saveMode      Specifies the behavior when data or table already exists.
-   *                      Options include Overwrite, Append, Ignore, ErrorIfExists.
-   * @tparam T Type of the input Dataset
-   */
   def writeParquet[T <: Serializable](outputDataset: Dataset[T],
                                       outputPath: String,
                                       codec: String = "none",

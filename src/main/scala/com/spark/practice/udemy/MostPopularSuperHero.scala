@@ -1,4 +1,4 @@
-package com.spark.practice
+package com.spark.practice.udemy
 
 import java.io.File
 import java.nio.charset.CodingErrorAction
@@ -8,6 +8,10 @@ import org.apache.spark.SparkContext
 
 import scala.io.{Codec, Source}
 
+/**
+ * Created By: Srikanth.nelluri
+ * Date: 30-08-2019
+ */
 object MostPopularSuperHero {
 
   def main(args: Array[String]): Unit = {

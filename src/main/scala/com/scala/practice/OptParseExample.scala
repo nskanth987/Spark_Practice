@@ -8,10 +8,11 @@ import com.frugalmechanic.optparse.OptParse
  */
 object OptParseExample extends OptParse {
 
-  val isEnabled = StrOpt()
+  val isEnabled = MultiStrOpt()
 
   def main(args: Array[String]): Unit = {
     parse(args)
-    println(isEnabled.get.toBoolean)
+    println(isEnabled.get)
   }
+
 }

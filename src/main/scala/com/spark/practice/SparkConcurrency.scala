@@ -8,6 +8,7 @@ import org.apache.log4j.Level
 /**
  * Created By: Srikanth.nelluri
  * Date: 30-08-2019
+ * http://www.russellspitzer.com/2017/02/27/Concurrency-In-Spark/
  */
 object SparkConcurrency {
 
@@ -27,9 +28,9 @@ object SparkConcurrency {
       .map(fastFoo)
       .map(x => ConcurrentContext.executeAsync(slowFoo(x)))
       .mapPartitions(it => ConcurrentContext.awaitSliding(it))
-      .foreach(x => println(s"Finishing with $x"))
+      .collect
 
-    println(s"Time: ${(System.currentTimeMillis() - st) / 1000.0}")
+    println(res.mkString(" ,") + s"\nTime: ${(System.currentTimeMillis() - st) / 1000.0}")
 
   }
 

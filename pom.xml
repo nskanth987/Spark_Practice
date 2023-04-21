@@ -12,7 +12,7 @@
   <name>Spark Practice</name>
 
   <properties>
-    <spark.version>3.0.1</spark.version>
+    <spark.version>3.4.0</spark.version>
     <embed.scala.version>2.12</embed.scala.version>
     <scala.version>2.12.9</scala.version>
   </properties>
